@@ -6,7 +6,7 @@ MAIL_PASSWORD=hxvmzkeaojoydqee
 EMAIL=webdevisrafil@gmail.com
 APP_URL=http://localhost:5000
 CLIENT_URL=http://localhost:3000/
-REACT_APP_LOGIN_URL=https://www.google.com
+REACT_APP_LOGIN_URL=http://localhost:3000/login
 
 GOOGLE_CLIENT_ID=167373504852-3h3kbcaib89qel88sv00e1ggic2rvisg.apps.googleusercontent.com
 GOOGLE_CLIENT_SECRET=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
