@@ -3,6 +3,7 @@ const userController = require('../controllers/user.controller');
 const verifyMailSend = require('../utils/nodemail');
 const verifyToken = require('../middleware/verifyToken');
 const passport = require('passport');
+const authorization = require('../middleware/authorization');
 // const authController = require('../controllers/authController');
 
 const router = express.Router();
@@ -11,7 +12,7 @@ router.route('/signup').post(userController.signup, verifyMailSend);
 router.route('/login').post(userController.login);
 router.post('/logout', userController.logOut);
 
-router.get('/', userController.getUsers);
+router.get('/', verifyToken, authorization('admin'), userController.getUsers);
 
 // facebook login routes
 router.get(
