@@ -8,8 +8,10 @@ const passport = require('passport');
 const router = express.Router();
 
 router.route('/signup').post(userController.signup, verifyMailSend);
-router.route('/login').get(userController.login);
-router.get('/logout', userController.logOut);
+router.route('/login').post(userController.login);
+router.post('/logout', userController.logOut);
+
+router.get('/', userController.getUsers);
 
 // facebook login routes
 router.get(
@@ -28,7 +30,7 @@ router.get(
 
 router.get('/login/failed', (req, res) => {
 	res.status(401).json({
-		status: 'fail',
+		success: false,
 		message: 'failure',
 	});
 });

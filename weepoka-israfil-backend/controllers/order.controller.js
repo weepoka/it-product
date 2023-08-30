@@ -24,7 +24,7 @@ exports.getOrders = async (req, res) => {
 		});
 	} catch (error) {
 		return res.status(500).json({
-			status: 'fail',
+			success: false,
 			message: error.message,
 		});
 	}
@@ -37,7 +37,7 @@ exports.createOrder = async (req, res) => {
 		const newOrder = await Order.create(order);
 		if (!newOrder) {
 			return res.status(500).json({
-				status: 'fail',
+				success: false,
 				message: 'Could not create an order',
 			});
 		}
@@ -49,7 +49,7 @@ exports.createOrder = async (req, res) => {
 	} catch (error) {
 		console.log(error);
 		res.status(500).json({
-			status: 'fail',
+			success: false,
 			error,
 		});
 	}
@@ -70,5 +70,15 @@ exports.updateOrder = async (req, res) => {
 		res
 			.status(500)
 			.json({ error: 'An error occurred while updating the order.' });
+	}
+};
+
+exports.getAllOrder = async (req, res) => {
+	try {
+		const orders = await Order.find();
+		res.json(orders);
+	} catch (error) {
+		console.error('Error fetching orders:', error);
+		res.status(500).json({ error: 'Internal server error' });
 	}
 };

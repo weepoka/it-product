@@ -4,28 +4,31 @@ const { getProductService } = require('../services/product.service');
 
 exports.createPrduct = async (req, res) => {
 	try {
-		const product = req.body;
-		// const imageUrls = req.files.map((file) => `/images/${file.filename}`);
-		// product.imageUrls = imageUrls;
-		console.log(product);
+		const product = JSON.parse(req.body.product);
+		const imageUrls = req.files.map(
+			(file) => `${process.env.APP_URL}/images/${file.filename}`
+		);
+		product.imageUrls = imageUrls;
+		product.image = imageUrls[0];
+		// console.log(JSON.parse(req.body.product));
 
 		const newProduct = await Product.create(product);
 
-		// if (!newProduct || imageUrls.length ) {
-		if (!newProduct) {
+		if (!newProduct || imageUrls.length < 1) {
 			return res.status(401).json({
-				status: 'fail',
+				success: false,
 				message: 'something went wrong please try again',
 			});
 		}
+		console.log(newProduct);
 		return res.status(200).json({
 			status: 'success',
 			message: 'product added ',
 		});
 	} catch (error) {
-		console.log(error);
+		console.log(error.message);
 		return res.status(500).json({
-			status: 'fail',
+			success: false,
 			message: error.message,
 		});
 	}
@@ -36,7 +39,7 @@ exports.getProducts = async (req, res) => {
 		const products = await getProductService(req);
 		if (!products || products.length < 1) {
 			return res.status(404).json({
-				status: 'fail',
+				success: false,
 				message: 'no products found',
 			});
 		}
@@ -47,7 +50,7 @@ exports.getProducts = async (req, res) => {
 	} catch (error) {
 		console.log(error);
 		return res.status(404).json({
-			status: 'fail',
+			success: false,
 			error,
 		});
 	}
@@ -63,7 +66,7 @@ exports.getAllproducts = async (req, res) => {
 	} catch (error) {
 		console.log(error);
 		return res.status(404).json({
-			status: 'fail',
+			success: false,
 			error,
 		});
 	}
@@ -94,7 +97,7 @@ exports.deleteProduct = async (req, res) => {
 
 		if (!deletedProduct) {
 			return res.status(404).json({
-				status: 'fail',
+				success: false,
 				message: 'Product not found',
 			});
 		}
@@ -106,7 +109,7 @@ exports.deleteProduct = async (req, res) => {
 		});
 	} catch (error) {
 		res.status(500).json({
-			status: 'fail',
+			success: false,
 			message: 'An error occurred while deleting the product',
 		});
 	}
@@ -115,8 +118,11 @@ exports.deleteProduct = async (req, res) => {
 exports.updateProduct = async (req, res) => {
 	try {
 		const productId = req.params.productId;
-		const updateData = req.body; // Updated data from the request body
+		const updateData = JSON.parse(req.body.data); // Updated data from the request body
+		const image = req.file;
 
+		const url = `${process.env.APP_URL}/images/${image.filename}`;
+		updateData.image = url;
 		// Find the product by ID and update it
 		const updatedProduct = await Product.findByIdAndUpdate(
 			productId,
@@ -124,9 +130,11 @@ exports.updateProduct = async (req, res) => {
 			{ new: true }
 		);
 
+		console.log(updatedProduct);
+
 		if (!updatedProduct) {
 			return res.status(404).json({
-				status: 'fail',
+				success: false,
 				message: 'Product not found',
 			});
 		}
@@ -134,11 +142,11 @@ exports.updateProduct = async (req, res) => {
 		res.status(200).json({
 			status: 'success',
 			message: 'Product updated',
-			data: updatedProduct,
+			// data: updatedProduct,
 		});
 	} catch (error) {
 		res.status(500).json({
-			status: 'fail',
+			success: false,
 			message: 'An error occurred while updating the product',
 		});
 	}

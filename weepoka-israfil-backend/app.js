@@ -8,7 +8,7 @@ const passportSetup = require('./config/passport');
 const app = express();
 const cors = require('cors');
 
-const mongoose = require('mongoose');
+app.use('/images', express.static('images'));
 
 // middleweate
 // app.use(
@@ -49,6 +49,8 @@ const orderRoute = require('./routes/order.route');
 const productRoute = require('./routes/product.route');
 const cartRoutes = require('./routes/cart.route');
 const bannerRoutes = require('./routes/banner.route');
+const brandRoutes = require('./routes/brand.route');
+const categoryRoutes = require('./routes/category.route');
 
 // root route
 app.get('/', (req, res) => {
@@ -62,5 +64,7 @@ app.use('/api/v1/order', orderRoute);
 app.use('/api/v1/products', productRoute);
 app.use('/api/v1/cart', cartRoutes);
 app.use('/api/v1/banner', bannerRoutes);
+app.use('/api/v1/brands', brandRoutes);
+app.use('/api/v1/categories', categoryRoutes);
 
 module.exports = app;

@@ -21,7 +21,7 @@ module.exports = async (req, res, next) => {
 		}
 		if (!token) {
 			return res.status(401).json({
-				status: 'fail',
+				success: false,
 				error: 'You are not logged in',
 			});
 		}
@@ -37,7 +37,7 @@ module.exports = async (req, res, next) => {
 		next();
 	} catch (error) {
 		res.status(403).json({
-			status: 'fail',
+			success: false,
 			error: 'session expired please login again',
 		});
 	}

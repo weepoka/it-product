@@ -7,7 +7,12 @@ const authorization = require('../middleware/authorization');
 
 router
 	.route('/')
-	.post(verifyToken, authorization('admin'), productController.createPrduct)
+	.post(
+		verifyToken,
+		authorization('admin'),
+		uploader.array('images', 12),
+		productController.createPrduct
+	)
 	.get(productController.getProducts);
 
 // router.post('/', uploader.array('images', 12), productController.createPrduct);
@@ -21,7 +26,12 @@ router.get(
 router
 	.route('/:productId')
 	.get(productController.getProductById)
-	.put(verifyToken, authorization('admin'), productController.updateProduct)
+	.put(
+		verifyToken,
+		authorization('admin'),
+		uploader.single('image'),
+		productController.updateProduct
+	)
 	.delete(verifyToken, authorization('admin'), productController.deleteProduct);
 
 module.exports = router;

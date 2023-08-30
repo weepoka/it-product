@@ -8,11 +8,13 @@ const ProductList = () => {
 
 	//data fecthing
 	useEffect(() => {
-		fetch(`http://localhost:5000/api/v1/products`)
+		fetch(`http://localhost:5000/api/v1/products/displayProducts`, {
+			credentials: 'include',
+		})
 			.then((res) => res.json())
 			.then((data) => {
 				console.log(data);
-				setProduct(data);
+				setProduct(data.data);
 			});
 	}, []);
 
@@ -39,12 +41,12 @@ const ProductList = () => {
 						</tr>
 					</thead>
 					<tbody>
-						{/* {products?.map((product) => (
+						{products?.map((product) => (
 							<ProductListTable
 								key={product._id}
 								product={product}
 							></ProductListTable>
-						))} */}
+						))}
 					</tbody>
 				</table>
 			</div>

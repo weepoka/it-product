@@ -5,33 +5,35 @@ import { useParams } from 'react-router-dom';
 const UpdateProduct = () => {
 	// const history =useHistory()
 	const { id } = useParams();
-	console.log(id);
+	const [selectedFile, setSelectedFile] = useState(null);
 	const [storeProduct, setStoreProduct] = useState([]);
 	const [updateProduct, setUpdateProduct] = useState([]);
-	useEffect(() => {
-		fetch(`http://localhost:5000/api/v1/products`)
-			.then((res) => res.json())
-			.then((data) => {
-				console.log(data);
-				setStoreProduct(data);
-				setUpdateProduct(data);
-			});
-	}, []);
-	console.log(storeProduct._id);
-	console.log(updateProduct);
+	// useEffect(() => {
+	// 	fetch(`http://localhost:5000/api/v1/products`)
+	// 		.then((res) => res.json())
+	// 		.then((data) => {
+	// 			console.log(data);
+	// 			setStoreProduct(data);
+	// 			setUpdateProduct(data);
+	// 		});
+	// }, []);
+
 	const handleUpdateUser = (event) => {
 		event.preventDefault();
 		// console.log(user);
-		fetch(`http://localhost:5000/api/v1/products/${storeProduct._id}`, {
+		const formData = new FormData();
+		formData.append('image', selectedFile);
+		formData.append('data', JSON.stringify(updateProduct));
+		fetch(`http://localhost:5000/api/v1/products/${id}`, {
 			method: 'PUT',
-			headers: {
-				'content-type': 'application/json',
-			},
-			body: JSON.stringify(updateProduct),
+			body: formData,
+			credentials: 'include',
 		})
-			.then((res) => res.json())
+			.then((res) => {
+				console.log(res);
+			})
 			.then((data) => {
-				if (data.modifiedCount > 0) {
+				if (data) {
 					alert('Product updated');
 					console.log(data);
 				}
@@ -44,6 +46,9 @@ const UpdateProduct = () => {
 		const newProduct = { ...updateProduct };
 		newProduct[field] = value;
 		setUpdateProduct(newProduct);
+	};
+	const handleFileChange = (event) => {
+		setSelectedFile(event.target.files[0]);
 	};
 	return (
 		<div>
@@ -134,7 +139,7 @@ const UpdateProduct = () => {
 					<div class='form-group my-4'>
 						<label className='mb-2'>Image</label> <br />
 						<input
-							onBlur={handleInputChange}
+							onChange={handleFileChange}
 							type='file'
 							className='form-control-file'
 							name='image'

@@ -25,12 +25,15 @@ const productSchema = mongoose.Schema(
 
 		quantity: Number,
 
-		imageUrl: [
+		imageUrls: [
 			{
 				type: String,
 				required: [true, 'Please provide the img urls'],
 			},
 		],
+		image: {
+			type: String,
+		},
 		category: {
 			type: String,
 			lowercase: true,
@@ -40,7 +43,10 @@ const productSchema = mongoose.Schema(
 		stock: {
 			type: Number,
 		},
-		subcategory: String,
+		subcategory: {
+			type: String,
+			lowercase: true,
+		},
 	},
 	{
 		timestamps: true,

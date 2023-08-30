@@ -54,7 +54,7 @@ const mailHandler = async (req, res) => {
 			if (error) {
 				console.error('Error sending email:', error);
 				res.status(500).json({
-					status: 'fail',
+					success: false,
 					error,
 				});
 			} else {
@@ -66,7 +66,7 @@ const mailHandler = async (req, res) => {
 		});
 	} catch (error) {
 		res.status(500).json({
-			status: 'fail',
+			success: false,
 			error,
 		});
 	}

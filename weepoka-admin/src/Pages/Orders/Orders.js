@@ -84,7 +84,9 @@ const Orders = () => {
 
 	//data fecthing
 	useEffect(() => {
-		fetch(`http://localhost:5000/api/v1/orders`)
+		fetch(`http://localhost:5000/api/v1/order/getAllOrders`, {
+			credentials: 'include',
+		})
 			.then((res) => res.json())
 			.then((data) => {
 				console.log(data);
@@ -140,7 +142,9 @@ const Orders = () => {
 	const defaultColumns = [
 		{
 			title: 'Product Id',
-			dataIndex: 'productId',
+			dataIndex: 'product',
+			key: 'productId',
+			render: (item) => Object.values(item)[0],
 		},
 		{
 			title: 'Date',
@@ -150,27 +154,30 @@ const Orders = () => {
 		},
 		{
 			title: 'Customer',
-			dataIndex: 'name',
+			dataIndex: 'user',
+			key: 'userName',
+			render: (item) => Object.values(item)[1],
 		},
 		{
 			title: 'Phone Number',
-			dataIndex: 'mobile',
+			dataIndex: 'contactNumber',
 		},
 		{
 			title: 'Paid',
-			dataIndex: 'paid',
+			dataIndex: 'paidStatus',
+			render: (text) => String(text),
 		},
 		{
 			title: 'Status',
-			dataIndex: 'status',
+			dataIndex: 'orderStatus',
 		},
 		{
 			title: 'Items',
-			dataIndex: 'items',
+			dataIndex: 'quantity',
 		},
 		{
 			title: 'Total',
-			dataIndex: 'total',
+			dataIndex: 'price',
 		},
 		{
 			title: 'Operation',
@@ -242,7 +249,7 @@ const Orders = () => {
 				components={components}
 				rowClassName={() => 'editable-row'}
 				bordered
-				dataSource={dataSource}
+				dataSource={orders}
 				columns={columns}
 			/>
 		</div>

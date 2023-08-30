@@ -27,118 +27,80 @@ const { Dragger } = Upload;
 //   },
 // };
 const AddProduct = () => {
-	// const [desc, setDesc] = useState();
-	// const handleDesc = (e) => {
-	//   setDesc(e);
-	// };
+	const [formData, setFormData] = useState({});
 
-	const [product, setProduct] = useState({});
-	const [image, setImage] = useState();
-	const handleAddProduct = (event) => {
-		event.preventDefault();
-		console.log(product);
+	const [selectedImages, setSelectedImages] = useState([]);
+	// const [previewImages, setPreviewImages] = useState([]);
+	console.log(formData);
 
-		fetch(`http://localhost:5000/api/v1/products`, {
-			method: 'POST',
-			headers: {
-				'content-type': 'application/json',
-			},
-			body: JSON.stringify({ ...product, image }),
-		})
-			.then((res) => res.json())
-			.then((data) => {
-				console.log(data);
-				if (data.acknowledged) {
-					alert('Product added successfully');
-					event.target.reset();
-				}
-			});
+	const handleInputChange = (e) => {
+		const { name, value } = e.target;
+		setFormData({ ...formData, [name]: value });
 	};
-	const handleInputBlur = (event) => {
-		const field = event.target.name;
-		const value = event.target.value;
-		const newProduct = { ...product };
-		newProduct[field] = value;
-		setProduct(newProduct);
-		console.log(value);
+
+	const handleImageChange = (e) => {
+		const files = e.target.files;
+		const imageList = [];
+
+		// for (let i = 0; i < files.length; i++) {
+		// 	const reader = new FileReader();
+		// 	reader.onload = () => {
+		// 		imageList.push(reader.result);
+
+		// 		if (imageList.length === files.length) {
+		// 			setPreviewImages(imageList);
+		// 		}
+		// 	};
+		// 	reader.readAsDataURL(files[i]);
+		// }
+
+		setSelectedImages([...selectedImages, ...files]);
 	};
-	//* image upload to host site & get link
-	const handleImageupload = (e) => {
-		const imageData = new FormData();
-		imageData.set('key', '83678c89848905e49673e600dcf348fc');
-		imageData.append('image', e.target.files[0]);
-		axios.post('https://api.imgbb.com/1/upload', imageData).then((res) => {
-			console.log(res.data.data.display_url);
-			setImage(res.data.data.display_url);
+
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+
+		const formDataObj = new FormData();
+		formDataObj.append('product', JSON.stringify(formData));
+		selectedImages.forEach((image) => {
+			formDataObj.append('images', image);
 		});
+		console.log(formDataObj);
+		try {
+			const response = await fetch('http://localhost:5000/api/v1/products', {
+				method: 'POST',
+				// headers: {
+				// 	'Content-Type': 'multipart/form-data',
+				// },
+				body: formDataObj,
+				credentials: 'include',
+			});
+			const data = await response.json();
+
+			if (response.ok) {
+				console.log('Data and images uploaded successfully');
+				console.log(data);
+
+				// Reset form and image state or perform other actions
+			} else {
+				console.error('Upload failed');
+			}
+		} catch (error) {
+			console.error('Error uploading data and images:', error);
+		}
 	};
 	return (
 		<div className='m-5'>
 			<h3 className='mb-4  title'>Add Product</h3>
-			{/* <div>
-        <form onSubmit={handleAddProduct}>
-          <CustomInput onBlur={handleInputBlur} type="text" label="Enter Product Name"  name/>
-          <div className="mb-3">
-            <ReactQuill
-              theme="snow"
-             
-              value={desc}
-              onChange={(evt) => {
-                handleDesc(evt);
-              }}
-            />
-          </div>
-          <CustomInput type="number" label="Enter Product Price" />
-          <select name="" className="form-control py-3 mb-3" id="">
-            <option value=""> Select Brand </option>
-            <option value=""> Brand 2</option>
-            <option value=""> Brand 3</option>
-            <option value=""> Brand 4</option>
-            <option value=""> Brand 5</option>
-          
-          </select>
-          <select name="" className="form-control py-3 mb-3" id="">
-            <option value="">Select Category</option>
-            <option value=""> Category 1</option>
-            <option value=""> Category 2</option>
-            <option value=""> Category 3</option>
-          </select>
-          <select name="" className="form-control py-3 mb-3" id="">
-            <option value="">Select Color</option>
-          </select> 
-         <div className="d-flex gap-3">
-         <CustomInput type="number" label="Enter Recent Product Price" />
-          <CustomInput type="number" label="Enter Old Product Price" />
-          <CustomInput type="number" label="Enter Offer Product Price (%)" />
-          
-         </div>
-         <Dragger {...props}>
-            <p className="ant-upload-drag-icon">
-              <InboxOutlined />
-            </p>
-            <p className="ant-upload-text">
-              Click or drag file to this area to upload
-            </p>
-            <p className="ant-upload-hint">
-              Support for a single or bulk upload. Strictly prohibit from
-              uploading company data or other band files
-            </p>
-          </Dragger>
-          <button
-            className="btn btn-success border-0 rounded-3 my-5"
-            type="submit"
-          >
-            Add Product
-          </button>
-        </form>
-      </div>  */}
 			<div>
 				<h3 className='mb-3'>Basic Information</h3>
-				<form onSubmit={handleAddProduct}>
+				<form onSubmit={handleSubmit} encType='multipart/form-data'>
 					<div className='form-group mb-3'>
 						<label className='mb-2'>Product Name</label>
 						<input
-							onBlur={handleInputBlur}
+							required
+							// onBlur={handleInputBlur}
+							onChange={handleInputChange}
 							type='text'
 							name='name'
 							className='form-control'
@@ -148,9 +110,10 @@ const AddProduct = () => {
 					<div className='form-group mb-3'>
 						<label className='mb-2'>Stock Product Quantity</label>
 						<input
-							onBlur={handleInputBlur}
+							onChange={handleInputChange}
 							type='quantity'
 							name='quantity'
+							required
 							className='form-control'
 							placeholder='quantity'
 						/>
@@ -158,21 +121,24 @@ const AddProduct = () => {
 					<div className='form-group mb-3'>
 						<label className='mb-2'>Pricing</label>
 						<input
-							onBlur={handleInputBlur}
+							onChange={handleInputChange}
 							type='text'
 							name='price'
+							required
 							className='form-control mb-3'
 							placeholder='new price'
 						/>
 						<input
-							onBlur={handleInputBlur}
+							required
+							onChange={handleInputChange}
 							type='text'
 							name='oldPrice'
 							className='form-control mb-3'
 							placeholder='old price'
 						/>
 						<input
-							onBlur={handleInputBlur}
+							required
+							onChange={handleInputChange}
 							type='text'
 							name='offerPrice'
 							className='form-control mb-3'
@@ -182,11 +148,15 @@ const AddProduct = () => {
 					<div className='form-group mb-3'>
 						<label className='mb-2'>Brand</label>
 						<select
-							onBlur={handleInputBlur}
+							required
+							onChange={handleInputChange}
 							className='form-control'
 							name='brand'
 							type='text'
 						>
+							<option value='' selected disabled hidden>
+								Choose here
+							</option>
 							<option>Brand 1</option>
 							<option>Brand 2</option>
 							<option>Brand 3</option>
@@ -197,11 +167,15 @@ const AddProduct = () => {
 					<div className='form-group mb-3'>
 						<label className='mb-2'>Category</label>
 						<select
-							onBlur={handleInputBlur}
+							required
+							onChange={handleInputChange}
 							className='form-control'
 							type='text'
 							name='category'
 						>
+							<option value='' selected disabled hidden>
+								Choose here
+							</option>
 							<option>Category 1</option>
 							<option>Category 2</option>
 							<option>Category 3</option>
@@ -212,10 +186,12 @@ const AddProduct = () => {
 					<div class='form-group my-4'>
 						<label className='mb-2'>Image</label> <br />
 						<input
+							required
 							type='file'
-							className='form-control-file'
-							onChange={handleImageupload}
-							name='image'
+							name='images'
+							accept='image/*'
+							multiple
+							onChange={handleImageChange}
 							// onBlur={handleInputBlur}
 						/>
 					</div>
@@ -232,7 +208,8 @@ const AddProduct = () => {
 					<div className='form-group mb-3'>
 						<label className='mb-2'>Description</label>
 						<textarea
-							onBlur={handleInputBlur}
+							required
+							onChange={handleInputChange}
 							className='form-control'
 							type='text'
 							name='description'

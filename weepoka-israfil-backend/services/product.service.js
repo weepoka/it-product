@@ -14,7 +14,7 @@ exports.getProductService = async (req) => {
 		return products;
 	} catch (error) {
 		res.status(500).json({
-			status: 'fail',
+			success: false,
 			message: 'An error occurred while fetching products',
 		});
 	}

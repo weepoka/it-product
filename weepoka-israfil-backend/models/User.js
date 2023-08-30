@@ -5,6 +5,13 @@ var bcrypt = require('bcryptjs');
 
 const userSchema = mongoose.Schema(
 	{
+		name: {
+			type: String,
+			// required: [true, "Please provide firstname"],
+			trim: true,
+			minLength: [3, 'Name must at least 3 character'],
+			maxLength: [50, 'name is too large'],
+		},
 		email: {
 			type: String,
 			trim: true,
@@ -35,13 +42,9 @@ const userSchema = mongoose.Schema(
 			enum: ['user', 'admin'],
 			default: 'user',
 		},
-		isAdmin: Boolean,
-		name: {
-			type: String,
-			// required: [true, "Please provide firstname"],
-			trim: true,
-			minLength: [3, 'Name must at least 3 character'],
-			maxLength: [50, 'name is too large'],
+		isAdmin: {
+			type: Boolean,
+			default: false,
 		},
 
 		contactNumber: {
@@ -54,7 +57,7 @@ const userSchema = mongoose.Schema(
 
 		shippingAddress: String,
 
-		imageURL: {
+		imageUrl: {
 			type: String,
 			validate: [validator.isURL, 'Please provide a valid url'],
 		},

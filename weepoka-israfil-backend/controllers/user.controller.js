@@ -10,7 +10,7 @@ exports.signup = async (req, res, next) => {
 		next();
 	} catch (error) {
 		res.status(500).json({
-			status: 'fail',
+			success: false,
 			error,
 		});
 	}
@@ -34,14 +34,14 @@ exports.login = async (req, res) => {
 		const { email, password } = req.body;
 		if (!email || !password)
 			return res.status(401).json({
-				status: 'fail',
+				success: false,
 				error: 'please provide your credential',
 			});
 
 		const user = await findUserByEmail(email);
 		if (!user) {
 			return res.status(401).json({
-				status: 'fail',
+				success: false,
 				error: 'No user found. Please create an account',
 			});
 		}
@@ -52,14 +52,14 @@ exports.login = async (req, res) => {
 
 		if (!isPasswordValid) {
 			return res.status(401).json({
-				status: 'fail',
+				success: false,
 				error: 'Invalid credential',
 			});
 		}
 
-		if (!user.verified) {
+		if (!user.isVerified) {
 			return res.status(401).json({
-				status: 'fail',
+				success: false,
 				error: 'please check your mail to active your account',
 			});
 		}
@@ -83,8 +83,9 @@ exports.login = async (req, res) => {
 			},
 		});
 	} catch (error) {
+		console.log(error);
 		res.status(500).json({
-			status: 'fail',
+			success: false,
 			error,
 		});
 	}
@@ -105,7 +106,7 @@ exports.resetPassword = async (req, res, next) => {
 		const email = req.body.email;
 
 		const user = await User.findOne({ email });
-		const token = generateToken(user, '3m');
+		const token = generateToken(user, '30m');
 
 		const updatedUser = await User.findOneAndUpdate(
 			{ email },
@@ -119,9 +120,8 @@ exports.resetPassword = async (req, res, next) => {
 
 		if (!user) {
 			return res.status(401).json({
-				status: 'fail',
-				message:
-					'this account does not have an account please create an account',
+				success: false,
+				message: 'you do not have an account please create an account',
 			});
 		}
 
@@ -129,7 +129,7 @@ exports.resetPassword = async (req, res, next) => {
 		next();
 	} catch (error) {
 		res.status(500).json({
-			status: 'fail',
+			success: false,
 			error,
 		});
 	}
@@ -152,7 +152,7 @@ exports.forgetPassword = async (req, res) => {
 
 		if (!resetPasswordUser) {
 			return res.status(401).json({
-				status: 'fail',
+				success: false,
 				message: 'Link does not exist',
 			});
 		}
@@ -163,7 +163,7 @@ exports.forgetPassword = async (req, res) => {
 		});
 	} catch (error) {
 		res.status(500).json({
-			status: 'fail',
+			success: false,
 			error,
 		});
 	}
@@ -171,15 +171,21 @@ exports.forgetPassword = async (req, res) => {
 
 exports.getMe = async (req, res) => {
 	try {
-		console.log({ user: req.user });
-		const user = await findUserByEmail(req.user?.email);
+		let user;
+		const facebookId = req.user.facebookId;
+		if (facebookId) {
+			user = await User.findOne({ facebookId });
+		} else {
+			user = await findUserByEmail(req.user?.email);
+		}
 
-		res.status(200).json({
+		return res.status(200).json({
+			status: 'success',
 			user,
 		});
 	} catch (error) {
 		res.status(500).json({
-			status: 'fail',
+			success: false,
 			error,
 		});
 	}
@@ -215,5 +221,23 @@ exports.verifyUser = async (req, res) => {
 		res.send(verifyContent);
 	} catch (error) {
 		res.status(500).send('Something went wrong');
+	}
+};
+
+exports.getUsers = async (req, res) => {
+	try {
+		const users = await User.find();
+		console.log(users);
+
+		return res.status(200).json({
+			status: 'success',
+			data: users,
+		});
+	} catch (error) {
+		res.status(500).json({
+			success: false,
+			message: 'internal server error',
+			error,
+		});
 	}
 };
