@@ -1,0 +1,92 @@
+[
+	{
+		"email": "user1@example.com",
+		"password": "password123",
+		"confirmPassword": "password123",
+		"name": "User One",
+		"contactNumber": 1234567890,
+		"shippingAddress": "123 Main St, City",
+		"imageURL": ["https://example.com/user1.jpg"]
+	},
+	{
+		"email": "user2@example.com",
+		"password": "password456",
+		"confirmPassword": "password456",
+		"name": "User Two",
+		"contactNumber": 2345678901,
+		"shippingAddress": "456 Elm St, Town",
+		"imageURL": ["https://example.com/user2.jpg"]
+	},
+	{
+		"email": "user3@example.com",
+		"password": "password789",
+		"confirmPassword": "password789",
+		"name": "User Three",
+		"contactNumber": 3456789012,
+		"shippingAddress": "789 Oak St, Village",
+		"imageURL": ["https://example.com/user3.jpg"]
+	},
+	{
+		"email": "user4@example.com",
+		"password": "passwordabc",
+		"confirmPassword": "passwordabc",
+		"name": "User Four",
+		"contactNumber": 4567890123,
+		"shippingAddress": "101 Maple St, Hamlet",
+		"imageURL": [["https://example.com/user4.jpg"]]
+	},
+	{
+		"email": "user5@example.com",
+		"password": "passworddef",
+		"confirmPassword": "passworddef",
+		"name": "User Five",
+		"contactNumber": 5678901234,
+		"shippingAddress": "111 Pine St, Suburb",
+		"imageURL": ["https://example.com/user5.jpg"]
+	},
+	{
+		"email": "user6@example.com",
+		"password": "passwordghi",
+		"confirmPassword": "passwordghi",
+		"name": "User Six",
+		"contactNumber": 6789012345,
+		"shippingAddress": "222 Birch St, Countryside",
+		"imageURL": ["https://example.com/user6.jpg"]
+	},
+	{
+		"email": "user7@example.com",
+		"password": "passwordjkl",
+		"confirmPassword": "passwordjkl",
+		"name": "User Seven",
+		"contactNumber": 7890123456,
+		"shippingAddress": "333 Cedar St, Outskirts",
+		"imageURL": ["https://example.com/user7.jpg"]
+	},
+	{
+		"email": "user8@example.com",
+		"password": "passwordmno",
+		"confirmPassword": "passwordmno",
+		"name": "User Eight",
+		"contactNumber": 8901234567,
+		"shippingAddress": "444 Willow St, Farmland",
+		"imageURL": ["https://example.com/user8.jpg"]
+	},
+	{
+		"email": "user9@example.com",
+		"password": "passwordpqr",
+		"confirmPassword": "passwordpqr",
+		"name": "User Nine",
+		"contactNumber": 9012345678,
+		"shippingAddress": "555 Oak St, Mountains",
+		"imageURL": ["https://example.com/user9.jpg"]
+	},
+	{
+		"email": "user10@example.com",
+		"password": "passwordstu",
+		"confirmPassword": "passwordstu",
+		"name": "User Ten",
+		"contactNumber": 1234567890,
+		"shippingAddress": "666 Maple St, Valley",
+		"imageURL": ["https://example.com/user10.jpg"]
+	}
+]
