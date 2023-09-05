@@ -1,0 +1,133 @@
+/* 
+.searchweepoka {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    max-width: 400px;
+    height: 50px;
+    transform: translateX(-50%) translateY(-50%);
+}
+.searchweepoka__toggle:checked ~ .searchweepoka__field {
+    width: calc(100% - 80px);
+    border-width: 2px;
+}
+.searchweepoka__toggle:checked ~ .searchweepoka__field .searchweepoka__input::placeholder {
+    opacity: 1;
+}
+.searchweepoka__toggle:checked ~ .searchweepoka__field .searchweepoka__close {
+    left: -25px;
+}
+.searchweepoka__toggle:checked ~ .searchweepoka__field .searchweepoka__button {
+    right: 5px;
+    width: 35px;
+    height: 35px;
+    border-radius: 50px;
+}
+.searchweepoka__toggle:checked ~ .searchweepoka__field .searchweepoka__button--toggle {
+    display: none;
+}
+.searchweepoka__toggle:checked ~ .searchweepoka__field .searchweepoka__button--submit {
+    display: flex;
+}
+.searchweepoka__close {
+    position: relative;
+    top: 50%;
+    left: 0;
+    transform: translateX(-50%);
+    transition: 0.3s;
+}search
+.searchweepoka__close::before, .searchweepoka__close::after {
+    position: absolute;
+    display: block;
+    content: '';
+    width: 15px;
+    height: 3px;
+    background-color: red;
+}
+.searchweepoka__close::before {
+    transform: rotate(45deg);
+}
+.searchweepoka__close::after {
+    transform: rotate(-45deg);
+}
+.searchweepoka__field {
+    position: absolute;
+    right: 0;
+    left: 50%;
+    width: 40px;
+    height: 45px;
+    border: 0px solid #fff;
+    border-radius: 50px;
+    transform: translateX(-50%);
+    transform-origin: right;
+    transition: 0.3s;
+}
+.searchweepoka__input {
+    position: absolute;
+    left: 0;
+    box-sizing: border-box;
+    width: calc(100% - 40px);
+    height: 100%;
+    padding: 5px 15px;
+    color: white;
+    background-color: pink;
+    border: 0;
+    outline: none;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+}
+.searchweepoka__input::placeholder {
+    color: white;
+    opacity: 0;
+    transition: 0.3s;
+    transition-delay: 0.3s;
+}
+.searchweepoka__label {
+    cursor: pointer;
+}
+.searchweepoka__button {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    background-color: pink;
+    border-radius: 5px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    transition: 0.3s;
+}
+.searchweepoka__button--submit {
+    display: none;
+    border: 0;
+}
+.searchweepoka__icon {
+    position: relative;
+    width: 19px;
+    height: 19px;
+}
+.searchweepoka__icon::before {
+    display: block;
+    content: '';
+    width: 12px;
+    height: 12px;
+    background-color: pink;
+    border: 2px solid #09f;
+    border-radius: 50px;
+}
+.searchweepoka__icon::after {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: block;
+    content: '';
+    width: 8px;
+    height: 2px;
+    background-color: #09f;
+    transform: rotate(45deg);
+    transform-origin: right;
+} */

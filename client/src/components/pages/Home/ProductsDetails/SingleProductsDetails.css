@@ -1,0 +1,36 @@
+.main {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.image-shadow {
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}
+
+.image-shadow:hover {
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
+
+.flex_row {
+  justify-content: center;
+  display: flex;
+  padding-top: 20px;
+}
+
+.thumbnail {
+  padding-left: 20px;
+}
+
+.clicked {
+  border: 8px solid blueviolet;
+}
+
+.details-btn {
+
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+.is-active {
+  background: red;
+  color: whitel;
+}
