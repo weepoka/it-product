@@ -1,1 +1,19 @@
 
+DATABASE_URL=mongodb+srv://logitech-db:hdRFNJfgTTYX1e2u@cluster0.xkzvtbc.mongodb.net/logitech-db?retryWrites=true&w=majority
+
+MAIL_PASSWORD=hxvmzkeaojoydqee 
+EMAIL=webdevisrafil@gmail.com 
+APP_URL=http://localhost:5000
+CLIENT_URL=http://localhost:3000
+REACT_APP_LOGIN_URL=http://localhost:3000/login
+PORT=5000
+GOOGLE_CLIENT_ID=167373504852-3h3kbcaib89qel88sv00e1ggic2rvisg.apps.googleusercontent.com 
+GOOGLE_CLIENT_SECRET=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
+
+FACEBOOK_CLIENT_ID=837307307683630 
+FACEBOOK_CLIENT_SECRET=f63113cdd9546cfe2a6caba8fa29aff1
+
+ACCESS_TOKEN_SECRET=95f94ce384d3c191ece0e213c717a49a404ede415ffcf832d94e0c7b3915dbecc52e7912f31c436b5 3f8bbef14de0b83e42e3321e438688685793395dfd0ec1d
+
+SANDBOX_STORE_ID=testi64e9f4d0e21e4 
+SANDBOX_STORE_PASSWORD=testi64e9f4d0e21e4@ssl
