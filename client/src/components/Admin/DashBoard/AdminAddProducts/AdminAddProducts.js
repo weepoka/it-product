@@ -87,17 +87,17 @@ const AdminAddProducts = () => {
 			newPrice = regularPrice - (regularPrice * Number(value)) / 100;
 			discountPrice = regularPrice - newPrice;
 
-			formData.discountPrice = discountPrice;
-			discountPriceInput.value = discountPrice;
+			formData.discountPrice = Math.round(discountPrice);
+			discountPriceInput.value = Math.round(discountPrice);
 			totalInput.value = newPrice;
 			setOfferPrice(newPrice);
 		} else if (name === 'discountPrice') {
 			newPrice = regularPrice - Number(value);
 			percentage = 100 / (regularPrice / Number(value));
 			offerPercentageInput.value = percentage.toFixed(0);
-			totalInput.value = newPrice;
+			totalInput.value = Math.round(newPrice);
 			formData.offerPercentage = Math.round(percentage);
-			formData.offerPrice = newPrice;
+			formData.offerPrice = Math.round(newPrice);
 			setOfferPrice(newPrice);
 		}
 
@@ -115,7 +115,7 @@ const AdminAddProducts = () => {
 		// console.log(formData);
 		setFormData({ ...formData, [name]: value });
 
-		console.log({ offerPrice });
+		console.log(formData);
 	};
 
 	const handleCategoryChange = (event) => {
@@ -262,6 +262,7 @@ const AdminAddProducts = () => {
 								type='text'
 								name='category'
 							>
+								<option> Select Category</option>
 								{categoryData.map((item, idx) => (
 									<option key={idx} value={item.category}>
 										{item.category}
@@ -296,6 +297,7 @@ const AdminAddProducts = () => {
 								)}
 							</select> */}
 							<input
+								onChange={handleInputChange}
 								type='text'
 								name='subcategory'
 								id='subcategory'

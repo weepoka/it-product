@@ -10,8 +10,6 @@ router
 	.post(uploader.array('images', 5), productController.createPrduct)
 	.get(productController.getProducts);
 
-// router.post('/', uploader.array('images', 12), productController.createPrduct);
-
 router.get('/displayProducts', productController.getAllproducts);
 router
 	.route('/:productId')

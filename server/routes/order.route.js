@@ -12,6 +12,7 @@ router.get(
 	orderController.getAllOrders
 );
 router.get('/:userId', verifyToken, orderController.getOrders);
+router.get('/single/:id', verifyToken, orderController.getSingleOrder);
 
 router.put(
 	'/:id',

@@ -71,6 +71,23 @@ exports.createOrder = async (req, res) => {
 	}
 };
 
+exports.getSingleOrder = async (req, res) => {
+	try {
+		const orderId = req.params.id; // Assuming the order ID is part of the URL
+
+		const order = await Order.findById(orderId);
+		if (!order) {
+			return res.status(404).json({ error: 'Order not found.' });
+		}
+
+		res.status(200).json({
+			success: true,
+			data: order,
+		});
+	} catch (error) {
+		res.status(500).json({ success: false, message: 'internal server error' });
+	}
+};
 exports.updateOrder = async (req, res) => {
 	try {
 		const orderId = req.params.id; // Assuming the order ID is part of the URL

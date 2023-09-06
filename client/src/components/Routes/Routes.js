@@ -36,6 +36,8 @@ import AdminRoutes from './AdminRoutes';
 import Update from '../pages/Profile/Update';
 import AddBanner from '../Admin/DashBoard/AdminBanner/AddBanner';
 import AdminBanner from '../Admin/DashBoard/AdminBanner/AdminBanners';
+import OrderDetails from '../pages/Profile/OrderDetails';
+import AdminSingleOrder from '../Admin/DashBoard/AdminOrders/AdminSingleOrder';
 
 const { createBrowserRouter } = require('react-router-dom');
 const { default: Main } = require('../Layout/Main');
@@ -178,6 +180,7 @@ const router = createBrowserRouter([
 					</PrivateRoutes>
 				),
 			},
+
 			{
 				path: '/profile/:id',
 				element: (
@@ -187,6 +190,14 @@ const router = createBrowserRouter([
 				),
 			},
 		],
+	},
+	{
+		path: '/order/:id',
+		element: (
+			<PrivateRoutes>
+				<OrderDetails />
+			</PrivateRoutes>
+		),
 	},
 	{
 		path: '/admin',
@@ -215,6 +226,10 @@ const router = createBrowserRouter([
 			{
 				path: 'adminOrders',
 				element: <AdminOrders></AdminOrders>,
+			},
+			{
+				path: 'adminOrders/:id',
+				element: <AdminSingleOrder />,
 			},
 			{
 				path: 'adminProducts',

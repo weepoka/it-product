@@ -2,6 +2,7 @@ import React from 'react';
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
 
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
+import { Link } from 'react-router-dom';
 
 const AdminOrdersList = ({ order }) => {
 	const {
@@ -48,7 +49,11 @@ const AdminOrdersList = ({ order }) => {
 				<Td>{orderStatus}</Td>
 				<Td>{date.toLocaleDateString('en-US', updatedAt)}</Td>
 				<Td>{price}</Td>
-				<Td>none</Td>
+				<Td>
+					<Link to={`${order?._id}`} className='text-green-600 font-bold'>
+						Update
+					</Link>
+				</Td>
 				{/* <td > */}
 				{/* <Link to ={`/updateProduct/${order._id}`}><span><AiFillEdit ></AiFillEdit>Edit   </span></Link> */}
 
