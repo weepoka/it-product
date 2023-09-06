@@ -1,0 +1,46 @@
+.menu :where(li)> :where(*:not(ul)) {
+    padding-left: 1rem;
+    padding-right: 0rem !important;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    color: currentColor;
+}
+
+.ec-category {
+    position: relative;
+}
+
+.ec-category .ec-category-toggle:before {
+    content: "";
+    top: -22px;
+    width: 0;
+    height: 0;
+    border-bottom: 10px solid rgb(59 130 246);
+    border-left: 10px solid transparent;
+    left: -25px;
+    right: auto;
+    position: absolute;
+}
+
+.ec-category .ec-category-toggle:after {
+    content: "";
+    top: -22px;
+    width: 0;
+    height: 0;
+    border-bottom: 10px solid rgb(59 130 246);
+    border-right: 10px solid transparent;
+    left: auto;
+    right: -25px;
+    position: absolute;
+}
+
+.e-catagory-btn {
+    background-color: rgb(59 130 246);
+
+}
+.dropArrow:hover +.dropHidden{
+ display: block;
+}
+.dropHidden{
+    display: none;
+}

@@ -1,0 +1,56 @@
+.slider-shadow:hover {
+    /* box-shadow: rgba(0, 0, 0, 0.3) 10px 19px 38px, rgba(0, 0, 0, 0.22) 10px 15px 12px; */
+}
+
+.input-group> :last-child {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0px !important;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0px !important;
+}
+
+.home-slider .slider-dot {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.slick-list li {
+    display: inline-block;
+    width: 30px;
+    height: 8px;
+    background: #fff;
+    margin: 0 5px;
+    opacity: .5;
+    cursor: pointer;
+}
+
+.slick-list li .active {
+    background: #ef4a23;
+    opacity: 1;
+}
+
+.slick-dots {
+    position: absolute;
+    bottom: -25px;
+    display: block;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    text-align: center;
+}
+
+.slick-list {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+.ze-Index{
+    z-index: -9999 !important;
+}
