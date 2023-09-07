@@ -1,203 +1,203 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react';
-import { Link, useSearchParams, useLoaderData } from 'react-router-dom';
-import ProductsDetails from '../ProductsDetails/ProductsDetails';
-import CategoryFilter from './CategoryFilter';
-import { FaLessThan, FaGreaterThan } from 'react-icons/fa';
-import { AuthContext } from '../../../AuthProvider/AuthProvider';
+import React, { useContext, useEffect, useMemo, useState } from "react";
+import { Link, useSearchParams, useLoaderData } from "react-router-dom";
+import ProductsDetails from "../ProductsDetails/ProductsDetails";
+import CategoryFilter from "./CategoryFilter";
+import { FaLessThan, FaGreaterThan } from "react-icons/fa";
+import { AuthContext } from "../../../AuthProvider/AuthProvider";
 
 const Products = () => {
-	// const product = useLoaderData();
-	const { product } = useContext(AuthContext);
-	const [products, setProducts] = useState(product);
-	const [cart, setCart] = useState([]);
-	//price filtering
-	// const [order, setOrder] = useState("ASC");
+  // const product = useLoaderData();
+  const { product } = useContext(AuthContext);
+  const [products, setProducts] = useState(product);
+  const [cart, setCart] = useState([]);
+  //price filtering
+  // const [order, setOrder] = useState("ASC");
 
-	//  price filtering
-	//  const sorting = () => {
-	//   if (order === "ASC") {
-	//     const sorted = products.sort((a, b) => a.price - b.price);
+  //  price filtering
+  //  const sorting = () => {
+  //   if (order === "ASC") {
+  //     const sorted = products.sort((a, b) => a.price - b.price);
 
-	//     setProductCategory(sorted);
-	//     setOrder("DSC");
-	//   }
-	// };
+  //     setProductCategory(sorted);
+  //     setOrder("DSC");
+  //   }
+  // };
 
-	// category filter
-	const [productCategory, setProductCategory] = useState(product);
-	// console.log(productCategory);
-	//check category
-	const cats = ['all', ...new Set(product.map((card) => card.category))];
-	const filter = (cat) => {
-		if (cat === 'all') {
-			setProductCategory(product);
-			return;
-		}
-		console.log(cat);
-		setProductCategory(product.filter((item) => item.category === cat));
-	};
+  // category filter
+  const [productCategory, setProductCategory] = useState(product);
+  // console.log(productCategory);
+  //check category
+  const cats = ["all", ...new Set(product.map((card) => card.category))];
+  const filter = (cat) => {
+    if (cat === "all") {
+      setProductCategory(product);
+      return;
+    }
+    console.log(cat);
+    setProductCategory(product.filter((item) => item.category === cat));
+  };
 
-	//for searching for products
-	const [searchParams] = useSearchParams();
-	//more product show
+  //for searching for products
+  const [searchParams] = useSearchParams();
+  //more product show
 
-	console.log(searchParams);
-	const [noOfElement, setNoOfElement] = useState(8);
-	const loadMore = () => {
-		setNoOfElement(noOfElement + noOfElement);
-		console.log('click');
-	};
+  console.log(searchParams);
+  const [noOfElement, setNoOfElement] = useState(8);
+  const loadMore = () => {
+    setNoOfElement(noOfElement + noOfElement);
+    console.log("click");
+  };
 
-	//  console.log(products);
+  //  console.log(products);
 
-	// console.log(`searchParams`, searchParams.get("min_price"));
-	// console.log(`searchParams`, searchParams.get("max_price"));
-	// console.log(`searchParams`, searchParams.get("search"));
-	const min_price =
-		searchParams.get('min_price') === null ? '' : searchParams.get('min_price');
-	const max_price =
-		searchParams.get('max_price') === null ? '' : searchParams.get('max_price');
-	const search =
-		searchParams.get('search') === null ? '' : searchParams.get('search');
+  // console.log(`searchParams`, searchParams.get("min_price"));
+  // console.log(`searchParams`, searchParams.get("max_price"));
+  // console.log(`searchParams`, searchParams.get("search"));
+  const min_price =
+    searchParams.get("min_price") === null ? "" : searchParams.get("min_price");
+  const max_price =
+    searchParams.get("max_price") === null ? "" : searchParams.get("max_price");
+  const search =
+    searchParams.get("search") === null ? "" : searchParams.get("search");
 
-	// check price and search items
-	useEffect(() => {
-		filterProducts();
-	}, []);
+  // check price and search items
+  useEffect(() => {
+    filterProducts();
+  }, []);
 
-	const filterProducts = () => {
-		// check minimum one entry occur
-		if (search.length || min_price.length || max_price.length) {
-			const min = parseFloat(min_price);
-			const max = parseFloat(max_price);
+  const filterProducts = () => {
+    // check minimum one entry occur
+    if (search.length || min_price.length || max_price.length) {
+      const min = parseFloat(min_price);
+      const max = parseFloat(max_price);
 
-			// filter products with these conditions
-			const filtered = productCategory.filter((product) => {
-				// if min price > product price get product
-				if (min > 0 && min > product.oldPrice) {
-					return false;
-				}
+      // filter products with these conditions
+      const filtered = productCategory.filter((product) => {
+        // if min price > product price get product
+        if (min > 0 && min > product.oldPrice) {
+          return false;
+        }
 
-				// max price max price < product price get product
-				if (max > 0 && max < product.oldPrice) {
-					return false;
-				}
+        // max price max price < product price get product
+        if (max > 0 && max < product.oldPrice) {
+          return false;
+        }
 
-				// search
-				if (
-					search.length > 0 &&
-					!product.name.toLowerCase().includes(search.toLowerCase())
-				) {
-					return false;
-				}
+        // search
+        if (
+          search.length > 0 &&
+          !product.name.toLowerCase().includes(search.toLowerCase())
+        ) {
+          return false;
+        }
 
-				return true;
-			});
-			setProductCategory(filtered);
-		}
-	};
+        return true;
+      });
+      setProductCategory(filtered);
+    }
+  };
 
-	// filtering product
+  // filtering product
 
-	const [selectedPrice, setSelectedPrice] = useState();
+  const [selectedPrice, setSelectedPrice] = useState();
 
-	const handleChange = (e) => {
-		const { value } = e.target;
-		console.log(e.target.value);
+  const handleChange = (e) => {
+    const { value } = e.target;
+    console.log(e.target.value);
 
-		setSelectedPrice(value);
-	};
-	const priceFilterList = () => {
-		if (!selectedPrice) {
-			return productCategory;
-		}
-		if (selectedPrice === 'Low') {
-			return productCategory.sort((a, b) => a.oldPrice - b.oldPrice);
-		}
-		if (selectedPrice === 'High') {
-			return productCategory.sort((a, b) => b.oldPrice - a.oldPrice);
-		}
-		if (selectedPrice === 'Offer') {
-			return productCategory.filter((a) => a.offerPercentage);
-		}
-		if (selectedPrice === 'Newest') {
-			return productCategory.filter((a) => a.newArrival);
-		}
-		return;
-	};
-	console.log({ selectedPrice }, { productCategory });
-	console.log(priceFilterList());
+    setSelectedPrice(value);
+  };
+  const priceFilterList = () => {
+    if (!selectedPrice) {
+      return productCategory;
+    }
+    if (selectedPrice === "Low") {
+      return productCategory.sort((a, b) => a.oldPrice - b.oldPrice);
+    }
+    if (selectedPrice === "High") {
+      return productCategory.sort((a, b) => b.oldPrice - a.oldPrice);
+    }
+    if (selectedPrice === "Offer") {
+      return productCategory.filter((a) => a.offerPercentage);
+    }
+    if (selectedPrice === "Newest") {
+      return productCategory.filter((a) => a.newArrival);
+    }
+    return;
+  };
+  console.log({ selectedPrice }, { productCategory });
+  console.log(priceFilterList());
 
-	var filteredList = useMemo(priceFilterList, [selectedPrice, productCategory]);
-	const slice = filteredList.slice(0, noOfElement);
+  var filteredList = useMemo(priceFilterList, [selectedPrice, productCategory]);
+  const slice = filteredList.slice(0, noOfElement);
 
-	return (
-		<div className=' py-10'>
-			{/* [products] text*/}
-			<div className='text-center mb-10'>
-				<h2 className='text-4xl font-bold '>Featured Products</h2>
-				<p className='mt-3'>Check & Get Your Desired Product!</p>
-			</div>
-			<div className='my-10 '>
-				<div className='flex gap-10 items-center justify-between my-5 '>
-					{/* category filter */}
-					{/* <div>
+  return (
+    <div className=" py-10">
+      {/* [products] text*/}
+      <div className="text-center mb-10">
+        <h2 className="text-4xl font-bold ">Featured Products</h2>
+        <p className="mt-3">Check & Get Your Desired Product!</p>
+      </div>
+      <div className="my-10 ">
+        <div className="flex gap-10 items-center justify-between my-5 ">
+          {/* category filter */}
+          {/* <div>
             <h2 className="text-2xl ">Filter Category</h2>
             <CategoryFilter categories={cats} handleClick={filter} />
           </div> */}
 
-					<div className='pt-3'>
-						<h2 className='text-center  text-md'>
-							Showing Products:{' '}
-							<span className='text-blue-500 ml-2 font-bold text-md'>
-								{slice.length}
-							</span>
-						</h2>
-					</div>
+          <div className="pt-3">
+            <h2 className="text-center  text-md">
+              Showing Products:{" "}
+              <span className="text-blue-500 ml-2 font-bold text-md">
+                {slice.length}
+              </span>
+            </h2>
+          </div>
 
-					{/* price filtering */}
-					<div className='flex justify-center items-center '>
-						<label className='mb-0 font-bold text-xl'>Filter:</label>
-						<div className='form-control ml-3  '>
-							<select
-								onChange={handleChange}
-								className='input input-bordered w-full '
-								type='text'
-								required
-								name='category'
-							>
-								<option value=''>Default</option>
-								<option value='Low'>Low To high</option>
-								<option value='High'>High To Low</option>
-								<option value='Offer'>Offer</option>
-								<option value='Newest'>Newest</option>
-							</select>
-						</div>
-					</div>
-				</div>
-				<p className='border p-0 m-0 border-b-gray-300'></p>
-			</div>
+          {/* price filtering */}
+          <div className="flex justify-center items-center ">
+            <label className="mb-0 font-bold text-xl">Filter:</label>
+            <div className="form-control ml-3  ">
+              <select
+                onChange={handleChange}
+                className="input input-bordered w-full "
+                type="text"
+                required
+                name="category"
+              >
+                <option value="">Default</option>
+                <option value="Low">Low To high</option>
+                <option value="High">High To Low</option>
+                <option value="Offer">Offer</option>
+                <option value="Newest">Newest</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <p className="border p-0 m-0 border-b-gray-300"></p>
+      </div>
 
-			{/* prodcuts images */}
+      {/* prodcuts images */}
 
-			<div className='grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-10 '>
-				{slice.map((product) => (
-					<ProductsDetails
-						key={product._id}
-						product={product}
-					></ProductsDetails>
-				))}
-			</div>
-			<div className='text-center mt-5'>
-				<button
-					onClick={() => loadMore()}
-					className='btn btn-sm btn-primary hover:bg-white hover:text-primary'
-				>
-					More products
-				</button>
-			</div>
-			{/* pagination */}
-			{/*
+      <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-10 ">
+        {slice.map((product) => (
+          <ProductsDetails
+            key={product._id}
+            product={product}
+          ></ProductsDetails>
+        ))}
+      </div>
+      <div className="text-center mt-5">
+        <button
+          onClick={() => loadMore()}
+          className="btn btn-sm bg-[#006FBA] hover:bg-white hover:text-primary"
+        >
+          More products
+        </button>
+      </div>
+      {/* pagination */}
+      {/*
        <div className="container mx-auto px-4 py-10">
         <nav
           className="flex flex-row flex-nowrap justify-between md:justify-center items-center"
@@ -271,8 +271,8 @@ const Products = () => {
           </Link>
         </nav>
       </div> */}
-		</div>
-	);
+    </div>
+  );
 };
 
 export default Products;

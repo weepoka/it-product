@@ -16,13 +16,12 @@ const transporter = nodemailer.createTransport({
  * @param {2:requesting for generate forget password link}
  */
 const mailHandler = async (req, res) => {
-	console.log(req.user);
 	const verificationToken = req?.user?._id.toString();
 	const passwordResetToken = req?.resetToken;
 
 	// Compose the verification link
 
-	const forgetPasswordLink = `${process.env.CLIENT_URL}/user/forget-password/${passwordResetToken}`;
+	const forgetPasswordLink = `${process.env.CLIENT_URL}/forgetPassword/${passwordResetToken}`;
 	const verifyEmailLink = `${process.env.APP_URL}/api/v1/user/verify/${verificationToken}`;
 
 	const verificationLink = verificationToken

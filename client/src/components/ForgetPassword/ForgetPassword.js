@@ -1,27 +1,28 @@
-import {
-	FacebookAuthProvider,
-	getAuth,
-	sendPasswordResetEmail,
-} from 'firebase/auth';
 import React from 'react';
 import { useContext } from 'react';
 import { useState } from 'react';
-import { GoogleAuthProvider } from 'firebase/auth';
 
-import { Form, Link, useLocation, useNavigate } from 'react-router-dom';
+import {
+	Form,
+	Link,
+	useLocation,
+	useNavigate,
+	useParams,
+} from 'react-router-dom';
 import { AuthContext } from '../AuthProvider/AuthProvider';
 import { facebookLogin, googleLogin, signIn } from '../../ApiServices/auth';
-import app from '../Firebase/firebase.config';
+
 import { toast } from 'react-hot-toast';
 import Loading from '../Loading/Loading';
+import Login from '../Login/Login';
 
-const Login = () => {
-	const { setProfile } = useContext(AuthContext);
-
-	const [error, setError] = useState('');
+const ForgetPassword = () => {
+	const { resetToken } = useParams();
+	const [message, setMessage] = useState('');
+	const [color, setColor] = useState('');
 	const [loading, setLoading] = useState(false);
 
-	const [user, setUser] = useState({}); //create for store getting email for reset
+	const [password, setUser] = useState({}); //create for store getting email for reset
 	const navigate = useNavigate();
 	const location = useLocation();
 	const from = location.state?.from?.pathname || '/';
@@ -37,25 +38,42 @@ const Login = () => {
 	};
 
 	//login part
-	const handleLogin = async (event) => {
-		console.log(user);
+	const handleForgetPassword = async (event) => {
 		event.preventDefault();
+		console.log(password);
+		if (password.password !== password.confirmPassword) {
+			setColor('red');
+			setMessage('confirmPassword does not match');
+			return toast.error('confirmPassword does not match');
+		}
+
 		setLoading(true);
+
 		try {
-			const res = await signIn(user);
+			const res = await fetch(
+				`${process.env.REACT_APP_SERVER}/user/forget-password/${resetToken}`,
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'Application/json',
+					},
+					body: JSON.stringify(password),
+				}
+			);
 			const data = await res.json();
 			console.log(data);
 			if (!res.ok) {
-				setError(data.message);
+				setColor('red');
+				setMessage(data.message);
 			}
 			if (res.ok) {
-				navigate(from, { replace: true });
-				toast.success('successfully logged in');
-				setProfile(data.data.user);
+				setColor('green');
+				setMessage(data.message);
+				toast.success('passport reset Successfull');
 			}
 		} catch (error) {
 			console.log(error);
-			setError(error.message);
+			setMessage(error.message);
 		} finally {
 			setLoading(false);
 		}
@@ -65,7 +83,7 @@ const Login = () => {
 	const handleInputChange = (event) => {
 		const name = event.target.name;
 		const value = event.target.value;
-		user[name] = value;
+		password[name] = value;
 	};
 	//password reset
 	//forget password
@@ -76,24 +94,23 @@ const Login = () => {
 				<div className='p-8 lg:w-1/2 mx-auto'>
 					<div className='bg-white rounded-t-lg p-8 '>
 						<p className='text-center text-xl font-bold text-gray-700 '>
-							Sign in with
+							Forget Password
 						</p>
 					</div>
 					<div className='bg-gray-300 rounded-b-lg py-12 px-4 lg:px-20 '>
 						<p className='text-center text-2xl text-gray-600 font-bold'>
-							Login
+							forget
 						</p>
 						{/* //* Form */}
-						<Form className='mt-6' onSubmit={handleLogin}>
-							<div className='relative '>
-								{/*//!Email field */}
+						<Form className='mt-6' onSubmit={handleForgetPassword}>
+							<div className='relative mt-3'>
+								{/*//!Password field */}
 								<input
 									onChange={handleInputChange}
 									className='appearance-none border pl-12 border-gray-100 shadow-sm focus:shadow-md focus:placeholder-gray-600  transition  rounded-md w-full py-3 text-gray-600 leading-tight focus:outline-none focus:ring-gray-600 focus:shadow-outline'
-									type='text'
-									name='email'
-									placeholder='Email'
-									// className="input input-bordered"
+									type='password'
+									name='password'
+									placeholder='password'
 									required
 								/>
 								<div className='absolute left-0 inset-y-0 flex items-center'>
@@ -103,8 +120,7 @@ const Login = () => {
 										viewBox='0 0 20 20'
 										fill='currentColor'
 									>
-										<path d='M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z' />
-										<path d='M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z' />
+										<path d='M10 2a5 5 0 00-5 5v2a2 2 0 00-2 2v5a2 2 0 002 2h10a2 2 0 002-2v-5a2 2 0 00-2-2H7V7a3 3 0 015.905-.75 1 1 0 001.937-.5A5.002 5.002 0 0010 2z' />
 									</svg>
 								</div>
 							</div>
@@ -112,11 +128,10 @@ const Login = () => {
 								{/*//!Password field */}
 								<input
 									onChange={handleInputChange}
-									className='appearance-none border pl-12 border-gray-100 shadow-sm focus:shadow-md focus:placeholder-gray-600  transition  rounded-md w-full py-3 text-gray-600 leading-tight focus:outline-none focus:ring-gray-600 focus:shadow-outline '
-									type='text'
-									name='password'
-									placeholder='password'
-									// className="input input-bordered"
+									className='appearance-none border pl-12 border-gray-100 shadow-sm focus:shadow-md focus:placeholder-gray-600  transition  rounded-md w-full py-3 text-gray-600 leading-tight focus:outline-none focus:ring-gray-600 focus:shadow-outline'
+									type='password'
+									name='confirmPassword'
+									placeholder='confirm password'
 									required
 								/>
 								<div className='absolute left-0 inset-y-0 flex items-center'>
@@ -135,30 +150,28 @@ const Login = () => {
 								<button
 									type='submit'
 									disabled={loading}
-									className='text-white py-2 w-full px-4 uppercase rounded bg-indigo-500 hover:bg-indigo-600 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 
-                  
-                  '
+									className='text-white py-2 w-full px-4 uppercase rounded bg-[#006FBA] hover:bg-indigo-600 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 
+                    
+                    '
 								>
-									{loading ? <Loading /> : 'Login'}
+									{loading ? <Loading /> : 'Reset'}
 								</button>
 								{/* <input
-									type='submit'
-									className='text-white py-2 w-full px-4 uppercase rounded bg-indigo-500 hover:bg-indigo-600 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 
-                  
-                    '
-									value='Login'
-								/> */}
+                                      type='submit'
+                                      className='text-white py-2 w-full px-4 uppercase rounded bg-indigo-500 hover:bg-indigo-600 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5 
+                    
+                      '
+                                      value='Login'
+                                  /> */}
 							</div>
 							<div>
 								<div>
-									<p className='text-red-600'>{error}</p>
+									<p className={`text-${color}-600`}>{message}</p>
 								</div>{' '}
 								<p className='text-center'>
 									<>
-										<Link to='/resetPassword'>
-											<button className='btn btn-link '>
-												Forget Password ?
-											</button>
+										<Link to='/login'>
+											<button className='btn btn-link '>Login</button>
 										</Link>
 									</>
 								</p>
@@ -177,4 +190,4 @@ const Login = () => {
 	);
 };
 
-export default Login;
+export default ForgetPassword;
