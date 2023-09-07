@@ -4,7 +4,6 @@ const User = require('../models/User');
 
 exports.signup = async (req, res, next) => {
 	try {
-		console.log('data', req.body);
 		const isUserAxist = await User.findOne({ email: req.body.email });
 		// console.log(isUserAxist);
 		if (!isUserAxist) {
@@ -16,7 +15,6 @@ exports.signup = async (req, res, next) => {
 			req.user = isUserAxist;
 			return next();
 		}
-		console.log(isUserAxist);
 
 		return res.status(409).json({
 			success: false,
@@ -122,7 +120,7 @@ exports.resetPassword = async (req, res, next) => {
 		const email = req.body.email;
 
 		const user = await User.findOne({ email });
-		const token = generateToken(user, '3m');
+		const token = generateToken(user, '30m');
 
 		const updatedUser = await User.findOneAndUpdate(
 			{ email },
@@ -157,6 +155,12 @@ exports.forgetPassword = async (req, res) => {
 		const passwordResetToken = req?.params?.resetToken;
 
 		const user = await User.findOne({ passwordResetToken });
+		if (!user) {
+			return res.status(401).json({
+				success: false,
+				message: 'Already passport changed with this link',
+			});
+		}
 		const hashedPassword = user.createHashedPassword(req.body.password);
 
 		const resetPasswordUser = await User.findOneAndUpdate(
@@ -167,18 +171,12 @@ exports.forgetPassword = async (req, res) => {
 			{ new: true }
 		);
 
-		if (!resetPasswordUser) {
-			return res.status(401).json({
-				status: 'fail',
-				message: 'Link does not exist',
-			});
-		}
-
 		res.status(200).json({
-			status: 'success',
+			success: true,
 			message: 'Password successfully changed',
 		});
 	} catch (error) {
+		console.log(error);
 		res.status(500).json({
 			status: 'fail',
 			error,
@@ -191,7 +189,7 @@ exports.updateUser = async (req, res) => {
 		const _id = req.params.id;
 		let updateData;
 		let image;
-		console.log(req.file);
+
 		if (req.file) {
 			updateData = JSON.parse(req.body.profile); // Updated data from the request body
 			const imageUrl = `${process.env.APP_URL}/images/${req.file.filename}`;

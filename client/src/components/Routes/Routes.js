@@ -22,12 +22,6 @@ import AdminProducts from './../Admin/DashBoard/AdminProducts/AdminProducts';
 import AdminAddProducts from '../Admin/DashBoard/AdminAddProducts/AdminAddProducts';
 import AdminUpdateProduct from './../Admin/DashBoard/AdminUpdateProducts/AdminUpdateProduct';
 import CategoryItems from '../pages/Home/CategoryItems/CategoryItems';
-import Desktop from '../pages/Home/CategoryProducts/Desktop/Desktop';
-import LaptopAndTab from '../pages/Home/CategoryProducts/LapopAndTab/LaptopAndTab';
-import Security from '../pages/Home/CategoryProducts/Security/Security';
-import OfficeEquipment from '../pages/Home/CategoryProducts/OfficeEquipment/OfficeEquipment';
-import Accessories from '../pages/Home/CategoryProducts/Accessories/Accessories';
-import Networking from '../pages/Home/CategoryProducts/Networking/Networking';
 import PaymentSuccess from '../pages/Payment/PaymentSuccess';
 import PaymentFail from '../pages/Payment/PaymentFail';
 import Profile from '../pages/Profile/Profile';
@@ -38,6 +32,9 @@ import AddBanner from '../Admin/DashBoard/AdminBanner/AddBanner';
 import AdminBanner from '../Admin/DashBoard/AdminBanner/AdminBanners';
 import OrderDetails from '../pages/Profile/OrderDetails';
 import AdminSingleOrder from '../Admin/DashBoard/AdminOrders/AdminSingleOrder';
+import Contact from '../pages/Contact/Contact';
+import ForgetPassword from '../ForgetPassword/ForgetPassword';
+import ResetPassword from '../ForgetPassword/ResetPassword';
 
 const { createBrowserRouter } = require('react-router-dom');
 const { default: Main } = require('../Layout/Main');
@@ -65,12 +62,24 @@ const router = createBrowserRouter([
 				},
 			},
 			{
+				path: '/ContactUs',
+				element: <Contact></Contact>,
+			},
+			{
 				path: '/signup',
 				element: <SignUp></SignUp>,
 			},
 			{
 				path: '/login',
 				element: <Login></Login>,
+			},
+			{
+				path: '/resetPassword',
+				element: <ResetPassword />,
+			},
+			{
+				path: '/forgetPassword/:resetToken',
+				element: <ForgetPassword />,
 			},
 			{
 				path: '/offer',
@@ -92,35 +101,35 @@ const router = createBrowserRouter([
 				path: '/product/:productId',
 				element: <Header> </Header>,
 
-				loader: async ({ params }) => {
-					console.log(params.productId);
-					return fetch(
-						`https://weepoka.vercel.app/products/${params.productId}`
-					);
-				},
+				// loader: async ({ params }) => {
+				//   console.log(params.productId);
+				//   return fetch(
+				//     `https://weepoka.vercel.app/products/${params.productId}`
+				//   );
+				// },
 			},
 
 			{
 				path: '/SingleProductDetails/ProductMoreInfoDetails/:productId',
 				element: <ProductMoreInfo></ProductMoreInfo>,
 
-				loader: async ({ params }) => {
-					console.log(params.productId);
-					return fetch(
-						`https://weepoka.vercel.app/products/${params.productId}`
-					);
-				},
+				// loader: async ({ params }) => {
+				//   console.log(params.productId);
+				//   return fetch(
+				//     `https://weepoka.vercel.app/products/${params.productId}`
+				//   );
+				// },
 			},
 			{
 				path: '/SingleProductDetails/ProductReview/:productId',
 				element: <ProductReview></ProductReview>,
 
-				loader: async ({ params }) => {
-					console.log(params.productId);
-					return fetch(
-						`https://weepoka.vercel.app/products/${params.productId}`
-					);
-				},
+				// loader: async ({ params }) => {
+				//   console.log(params.productId);
+				//   return fetch(
+				//     `https://weepoka.vercel.app/products/${params.productId}`
+				//   );
+				// },
 			},
 			{
 				path: '/checkout/:id',
@@ -129,8 +138,8 @@ const router = createBrowserRouter([
 						<CheckOut></CheckOut>
 					</PrivateRoutes>
 				),
-				loader: ({ params }) =>
-					fetch(`https://weepoka.vercel.app/products/${params.id}`),
+				// loader: ({ params }) =>
+				//   fetch(`https://weepoka.vercel.app/products/${params.id}`),
 			},
 			{
 				path: '/orders',
@@ -189,16 +198,17 @@ const router = createBrowserRouter([
 					</PrivateRoutes>
 				),
 			},
+			{
+				path: '/order/:id',
+				element: (
+					<PrivateRoutes>
+						<OrderDetails />
+					</PrivateRoutes>
+				),
+			},
 		],
 	},
-	{
-		path: '/order/:id',
-		element: (
-			<PrivateRoutes>
-				<OrderDetails />
-			</PrivateRoutes>
-		),
-	},
+
 	{
 		path: '/admin',
 		element: (

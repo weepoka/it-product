@@ -8,6 +8,8 @@ const passportSetup = require("./config/passport");
 const app = express();
 const cors = require("cors");
 
+// app.use("view engine", "ejs");
+
 app.use("/images", express.static("images"));
 
 // middleweate

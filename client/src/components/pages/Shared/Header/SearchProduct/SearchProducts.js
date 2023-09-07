@@ -1,13 +1,13 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { FaShoppingCart, FaHeart } from 'react-icons/fa';
-import { TbCurrencyTaka } from 'react-icons/tb';
+import React from "react";
+import { Link } from "react-router-dom";
+import { FaShoppingCart, FaHeart } from "react-icons/fa";
+import { TbCurrencyTaka } from "react-icons/tb";
 
-const SearchProducts = ({searchProduct}) => {
-    const { _id,image, price, description,oldPrice, name } = searchProduct;
-    return (
-      <div className=''>
-                <div
+const SearchProducts = ({ searchProduct }) => {
+  const { _id, image, price, description, oldPrice, name } = searchProduct;
+  return (
+    <div className="">
+      <div
         className="img-wrapper card w-70 bg-base-100 border-2 hover:border-slate-400 hover:shadow-sky-800 card-hover"
         style={{
           boxShadow:
@@ -50,21 +50,22 @@ const SearchProducts = ({searchProduct}) => {
               <TbCurrencyTaka />
             </span>{" "}
             <span className=" font-bold text-blue-600">{price}</span>
-            <span className=" font-bold text-gray-600 old-price">{oldPrice}</span>
+            <span className=" font-bold text-gray-600 old-price">
+              {oldPrice}
+            </span>
           </div>
           <div className="card-actions  my-2">
             <Link to={`/SingleProductDetails/${_id}`}>
               {" "}
-              <button className="btn btn-sm btn-primary hover:bg-white hover:text-primary">
+              <button className="btn btn-sm bg-[#006FBA] hover:bg-white hover:text-primary">
                 Buy Now
               </button>
             </Link>
           </div>
         </div>
       </div>
-</div>
-        
-    );
+    </div>
+  );
 };
 
 export default SearchProducts;
